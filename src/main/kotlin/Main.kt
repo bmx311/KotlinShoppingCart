@@ -1,6 +1,6 @@
 package shoppingCart
 
-import kotlin.collections.MutableMap as MutableMap1
+import kotlin.collections.MutableMap as MutableMap
 
 /**
   Returns a map of productId -> MutableMap("name" to String, "price" to Double, "stock" to Int).
@@ -12,13 +12,13 @@ import kotlin.collections.MutableMap as MutableMap1
   //    4 -> { "key4"="Gaming Console", "price"=150.000, "stock"=8 },
   //    5 -> { "key5"="Wireless Mouse", "price"=8.500, "stock"=15 },
 **/
-fun createStoreInventory(): MutableMap1<Int, MutableMap1<String, Any>> {
+fun createStoreInventory(): MutableMap<Int, MutableMap<String, Any>> {
     return mutableMapOf(
-        1 to mutableMapOf("key1" to "Laptop", "price1" to 350.00, "stock" to 10),
-        2 to mutableMapOf("key2" to "Smart TV", "price2" to 200.00, "stock" to 5),
-        3 to mutableMapOf("key3" to "Headphones", "price3" to 50.00, "stock" to 20),
-        4 to mutableMapOf("key4" to "Gaming Console", "price4" to 150.00, "stock" to 8),
-        5 to mutableMapOf("key5" to "Wireless Mouse", "price5" to 8.500, "stock" to 15)
+        1 to mutableMapOf("key1" to "Laptop", "price" to 350.00, "stock" to 10),
+        2 to mutableMapOf("key2" to "Smart TV", "price" to 200.00, "stock" to 5),
+        3 to mutableMapOf("key3" to "Headphones", "price" to 50.00, "stock" to 20),
+        4 to mutableMapOf("key4" to "Gaming Console", "price" to 150.00, "stock" to 8),
+        5 to mutableMapOf("key5" to "Wireless Mouse", "price" to 8.500, "stock" to 15)
     )
 }
 
@@ -28,18 +28,18 @@ fun createStoreInventory(): MutableMap1<Int, MutableMap1<String, Any>> {
  * - Return true if successful, false otherwise.
  */
 fun addToCart(
-    storeInventory: MutableMap1<Int, MutableMap1<String, Any>>,
-    cart: MutableMap1<Int, Int>,
+    storeInventory: MutableMap<Int, MutableMap<String, Any>>,
+    cart: MutableMap<Int, Int>,
     productId: Int,
     quantity: Int
 ): Boolean {
-        var productStock = storeInventory[productId]?.get("stock") as Int
+        val productStock = storeInventory[productId]?.get("stock") as Int
 
         if (productStock.toString().toInt() >= quantity) {
             if(cart.get(productId) != null){
-                var oldQuan = cart.get((productId)) as Int;
+                val oldQuan = cart.get((productId)) as Int;
 
-                cart.put(productId, quantity +oldQuan );
+                cart[productId] = quantity +oldQuan;
             }else{
                 cart.put(productId, quantity)
             }
@@ -61,16 +61,16 @@ fun addToCart(
  * - Return true if successful, false otherwise.
  */
 fun removeFromCart(
-    storeInventory: MutableMap1<Int, MutableMap1<String, Any>>,
-    cart: MutableMap1<Int, Int>,
+    storeInventory: MutableMap<Int, MutableMap<String, Any>>,
+    cart: MutableMap<Int, Int>,
     productId: Int,
     quantity: Int
 ): Boolean {
-    var productStock = storeInventory[productId]?.get("stock") as Int
+    val productStock = storeInventory[productId]?.get("stock") as Int
 
-    if (cart.get(productId) != null) {
-        cart.put(productId, cart.get(productId).toString().toInt() - quantity)
-        storeInventory.get(productId)?.set("stock", productStock + quantity)
+    if (cart[productId] != null) {
+        cart[productId] = cart.get(productId).toString().toInt() - quantity
+        storeInventory[productId]?.set("stock", productStock + quantity)
         return true
     } else {
         return false
@@ -82,16 +82,18 @@ fun removeFromCart(
  * - Multiply (price * quantity) and sum for the final total.
  */
 fun calculateTotal(
-    storeInventory: MutableMap1<Int, MutableMap1<String, Any>>,
-    cart: MutableMap1<Int, Int>
+    storeInventory: MutableMap<Int, MutableMap<String, Any>>,
+    cart: MutableMap<Int, Int>,
+    productId: Int,
+    quantity: Int
 ): Double {
-    if (cart.get(productId) != null) {
+    if (cart[productId] == null) {
 
+        return 0.0
 
-        
     }
     else
-        return 0.0
+        return 1.0
 }
 
 /**
@@ -100,7 +102,7 @@ fun calculateTotal(
  * - Matching is case-insensitive.
  */
 fun filterProductsByName(
-    storeInventory: MutableMap1<Int, MutableMap1<String, Any>>,
+    storeInventory: MutableMap<Int, MutableMap<String, Any>>,
     keyword: String
 ): List<Int> {
     TODO("Implement filterProductsByName()")

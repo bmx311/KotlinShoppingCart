@@ -31,26 +31,31 @@ fun createStoreInventory(): MutableMap<Int, MutableMap<String, Any>> {
         productId: Int,
         quantity: Int
     ): Boolean {
-        var productStock = storeInventory[productId]?.get("stock") as Int
-
-        if (productStock.toString().toInt() >= quantity) {
-            if (cart.get(productId) != null) {
-                var oldQuan = cart.get((productId)) as Int;
-
-                cart.put(productId, quantity + oldQuan);
-            } else {
-                cart.put(productId, quantity)
-            }
-
-            storeInventory.get(productId)?.set("stock", productStock - quantity)
-
-
-            return true
-        } else {
+        if (!storeInventory.containsKey(productId)) {
             return false
-
         }
+
+        // Get the current stock of the product
+        val productDetails = storeInventory[productId]!!
+        val currentStock = productDetails["stock"] as Int
+
+        // Check if there's enough stock to add to cart
+        if (quantity > currentStock) {
+            return false
+        }
+
+        // Reduce the stock in the inventory
+        productDetails["stock"] = currentStock - quantity
+
+        // Update the cart
+        // If product already in cart, increase quantity
+        // If not, add new entry
+        cart[productId] = (cart[productId] ?: 0) + quantity
+
+        return true
+
     }
+
 
     /**
      * Removes [quantity] of [productId] from [cart], restoring the same amount to [storeInventory].
@@ -63,17 +68,30 @@ fun createStoreInventory(): MutableMap<Int, MutableMap<String, Any>> {
         productId: Int,
         quantity: Int
     ): Boolean {
-        var productStock = storeInventory[productId]?.get("stock") as Int
-
-        if (cart.get(productId) != null) {
-            cart.put(productId, cart.get(productId).toString().toInt() - quantity)
-            storeInventory.get(productId)?.set("stock", productStock + quantity)
-            return true
-        } else {
+        if (!cart.containsKey(productId)) {
             return false
         }
-    }
 
+        val currentCartQuantity = cart[productId]!!
+
+        if (quantity > currentCartQuantity) {
+            return false
+        }
+
+        // Update the cart
+        cart[productId] = currentCartQuantity - quantity
+
+        // Remove the product from the cart if quantity becomes zero
+        if (cart[productId] == 0) {
+            cart.remove(productId)
+        }
+
+        // Restore the stock in the inventory
+        val productDetails = storeInventory[productId]!!
+        productDetails["stock"] = (productDetails["stock"] as Int) + quantity
+
+        return true
+    }
     /**
      * Calculates the total cost of items in [cart].
      * - For each (productId -> quantity), retrieve the price from [storeInventory].

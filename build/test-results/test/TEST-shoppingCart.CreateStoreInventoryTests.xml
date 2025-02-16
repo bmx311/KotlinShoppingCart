@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="shoppingCart.CreateStoreInventoryTests" tests="5" skipped="0" failures="1" errors="0" timestamp="2025-02-16T10:05:03" hostname="WAHABLAPTOP" time="0.061">
+<testsuite name="shoppingCart.CreateStoreInventoryTests" tests="5" skipped="0" failures="1" errors="0" timestamp="2025-02-16T10:10:05" hostname="WAHABLAPTOP" time="0.054">
   <properties/>
-  <testcase name="1) Inventory is not empty" classname="shoppingCart.CreateStoreInventoryTests" time="0.002"/>
-  <testcase name="2) Inventory has exactly 5 items" classname="shoppingCart.CreateStoreInventoryTests" time="0.011"/>
+  <testcase name="1) Inventory is not empty" classname="shoppingCart.CreateStoreInventoryTests" time="0.003"/>
+  <testcase name="2) Inventory has exactly 5 items" classname="shoppingCart.CreateStoreInventoryTests" time="0.005"/>
   <testcase name="3) Contains required product IDs (1..5)" classname="shoppingCart.CreateStoreInventoryTests" time="0.001"/>
   <testcase name="4) No extra product IDs beyond the required five" classname="shoppingCart.CreateStoreInventoryTests" time="0.032"/>
   <testcase name="5) Each product has the correct name, price, and stock" classname="shoppingCart.CreateStoreInventoryTests" time="0.007">

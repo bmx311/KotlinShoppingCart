@@ -101,7 +101,10 @@ fun createStoreInventory(): MutableMap<Int, MutableMap<String, Any>> {
         storeInventory: MutableMap<Int, MutableMap<String, Any>>,
         cart: MutableMap<Int, Int>
     ): Double {
-        TODO("Implement calculateTotal()")
+        return cart.entries.sumOf { (productId, quantity) ->
+            val price = storeInventory[productId]!!["price"] as Double
+            price * quantity
+        }
     }
 
     /**
@@ -113,7 +116,11 @@ fun createStoreInventory(): MutableMap<Int, MutableMap<String, Any>> {
         storeInventory: MutableMap<Int, MutableMap<String, Any>>,
         keyword: String
     ): List<Int> {
-        TODO("Implement filterProductsByName()")
+        return storeInventory.entries
+            .filter { (_, details) ->
+                (details["name"] as String).lowercase().contains(keyword.lowercase())
+            }
+            .map { it.key }
     }
 
     /**
